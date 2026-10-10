@@ -25,7 +25,7 @@ const STEP=[['Share Your Requirements','Tell us your plot, house requirements, p
 const ph=t=>'data:image/svg+xml,'+encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600"><rect width="800" height="600" fill="#151719"/><path d="M200 400V260l200-120 200 120v140zM360 400V320h80v80" fill="none" stroke="#D7192D" stroke-width="6"/><text x="400" y="480" fill="#8B929B" font-family="sans-serif" font-size="26" text-anchor="middle">${t||'Creative Builders'}</text></svg>`);
 function fixImgs(){$$('img').forEach(i=>{if(i.dataset.fb)return;i.dataset.fb=1;i.onerror=()=>{i.onerror=null;i.src=ph(i.alt.split('(')[0].trim())}})}
 const img=(k,alt,w)=>`<img loading="lazy" src="${U(IMG[k],w)}" alt="${alt}">`;
-$('#svc').innerHTML=SVC.map(s=>`<article class="card rv">${img(s[2],s[0]+' (concept imagery)')}<div class="pad">${ic(s[3])}<h3>${s[0]}</h3><p>${s[1]}</p></div></article>`).join('');
+$('#svc').innerHTML=SVC.map((s,i)=>`<article class="card svc rv"><div class="im">${img(s[2],s[0]+' (concept imagery)')}<span class="badge">${ic(s[3])}</span><span class="num">0${i+1}</span></div><div class="pad"><h3>${s[0]}</h3><p>${s[1]}</p></div></article>`).join('');
 $('#why').innerHTML=WHY.map((w,i)=>`<div class="card rv" data-n="0${i+1}"><h3>${w[0]}</h3><p>${w[1]}</p></div>`).join('');
 $('#tl').innerHTML=STEP.map((s,i)=>`<li class="rv"><b>${i+1}</b><h3>${s[0]}</h3><p>${s[1]}</p></li>`).join('');
 $('#fsvc').innerHTML=SVC.map(s=>`<span>${s[0]}</span>`).join('');
@@ -34,7 +34,7 @@ $('#yr').textContent=new Date().getFullYear();
 const cats=['All Projects','Modern Villas','Exterior Elevations','Interior Designs','Floor Plans','CAD & 3D Visualization'];
 $('#filters').innerHTML=cats.map((c,i)=>`<button class="${i?'':'on'}" data-c="${c}" aria-pressed="${!i}">${c}</button>`).join('');
 const G=$('#gallery');
-const draw=c=>{G.innerHTML=PROJ.map((p,i)=>({p,i})).filter(o=>c==='All Projects'||o.p[1]===c).map(({p,i})=>`<button class="card proj" data-i="${i}">${img(p[2],p[0]+' (concept)')}<div class="pad"><small>${p[1]}</small><h3>${p[0]}</h3><p>View Project →</p></div></button>`).join('')||'<p>No projects in this category yet.</p>';fixImgs()};
+const draw=c=>{G.innerHTML=PROJ.map((p,i)=>({p,i})).filter(o=>c==='All Projects'||o.p[1]===c).map(({p,i})=>`<button class="card proj" data-i="${i}"><div class="im">${img(p[2],p[0]+' (concept)')}<span class="tag">${p[1]}</span><span class="view">View Project <b>→</b></span></div><div class="pad"><h3>${p[0]}</h3><p>${p[3]}</p></div></button>`).join('')||'<p>No projects in this category yet.</p>';fixImgs()};
 $('#filters').onclick=e=>{const b=e.target.closest('button');if(!b)return;$$('#filters button').forEach(x=>{x.classList.toggle('on',x===b);x.setAttribute('aria-pressed',x===b)});draw(b.dataset.c)};
 draw('All Projects');
 const M=$('#modal');let last;
